@@ -1,0 +1,21 @@
+prepare-commit-msg:
+    - pattern: "*.go"
+      run:
+          - gocyclo -over 10 {files}
+          - varcheck
+          - deadcode
+          - structcheck
+
+pre-push:
+    - run:
+          - go test .
+
+post-receive:
+    - pattern: "glide.yaml"
+      run:
+          - glide install
+
+    - pattern: "*.go"
+      run:
+          - echo {files}
+

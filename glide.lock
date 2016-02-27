@@ -1,0 +1,10 @@
+hash: 6b83a48c137287c0b306373df8559cadedb5938762a1e163b97d089d28be4a9b
+updated: 2016-02-25T08:11:11.433022608-05:00
+imports:
+- name: github.com/spf13/cobra
+  version: 65a708cee0a4424f4e353d031ce440643e312f92
+- name: github.com/spf13/pflag
+  version: 7f60f83a2c81bc3c3c0d5297f61ddfa68da9d3b7
+- name: gopkg.in/yaml.v2
+  version: f7716cbe52baa25d2e9b0d0da546fcf909fc16b4
+devImports: []
