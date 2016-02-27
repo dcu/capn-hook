@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"code.cuadrado.xyz/capn-hook/core"
 	"github.com/spf13/cobra"
@@ -26,14 +27,10 @@ import (
 
 // runCmd represents the run command
 var runCmd = &cobra.Command{
-	Use:   "run",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:   "run <hook>",
+	Short: "Runs the specified hook",
+	Long: `Runs the given <hook. A hook can be either:
+  ` + strings.Join(core.SupportedHooks, "\n  "),
 	Run: func(cmd *cobra.Command, args []string) {
 		manifest, err := core.FindManifest()
 		if err != nil {
