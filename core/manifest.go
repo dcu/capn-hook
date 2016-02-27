@@ -14,21 +14,22 @@ const (
 )
 
 var (
-	manifestFileName    = "hooks.yml"
-	errManifestNotFound = errors.New("manifest not found")
+	// DefaultManifestFileName is the default name of the file that contains the manifest.
+	DefaultManifestFileName = "hooks.yml"
+	errManifestNotFound     = errors.New("manifest not found")
 )
 
 // Manifest represents the manifest to run the hooks
 type Manifest struct {
-	PreCommit        []*Hook `yaml:"pre-commit"`
-	PostReceive      []*Hook `yaml:"post-receive"`
-	PrepareCommitMsg []*Hook `yaml:"prepare-commit-msg"`
-	PostCommit       []*Hook `yaml:"post-commit"`
-	PreRebase        []*Hook `yaml:"pre-rebase"`
-	PostCheckout     []*Hook `yaml:"post-checkout"`
-	PostMerge        []*Hook `yaml:"post-merge"`
-	PrePush          []*Hook `yaml:"pre-push"`
-	PreAutoGC        []*Hook `yaml:"pre-auto-gc"`
+	PreCommit        []*Hook `yaml:"pre-commit,omitempty"`
+	PostReceive      []*Hook `yaml:"post-receive,omitempty"`
+	PrepareCommitMsg []*Hook `yaml:"prepare-commit-msg,omitempty"`
+	PostCommit       []*Hook `yaml:"post-commit,omitempty"`
+	PreRebase        []*Hook `yaml:"pre-rebase,omitempty"`
+	PostCheckout     []*Hook `yaml:"post-checkout,omitempty"`
+	PostMerge        []*Hook `yaml:"post-merge,omitempty"`
+	PrePush          []*Hook `yaml:"pre-push,omitempty"`
+	PreAutoGC        []*Hook `yaml:"pre-auto-gc,omitempty"`
 
 	Path string `yaml:"-"`
 }
@@ -136,6 +137,21 @@ func (manifest *Manifest) Hooks(name string) []*Hook {
 	return nil
 }
 
+// ToByteArray returns the manifest encoded
+func (manifest *Manifest) ToByteArray() []byte {
+	data, err := yaml.Marshal(manifest)
+	if err != nil {
+		return []byte{}
+	}
+
+	return data
+}
+
+// WriteFile writes the manifest to the given path
+func (manifest *Manifest) WriteFile(path string) {
+	ioutil.WriteFile(path, manifest.ToByteArray(), 0644)
+}
+
 func findManifestIn(path string, depth int) (*Manifest, error) {
 	if depth > maxDepthToFindManifest {
 		return nil, errManifestNotFound
@@ -149,7 +165,7 @@ func findManifestIn(path string, depth int) (*Manifest, error) {
 	for _, match := range matches {
 		fileName := filepath.Base(match)
 
-		if fileName == manifestFileName {
+		if fileName == DefaultManifestFileName {
 			return LoadManifest(fileName)
 		}
 	}

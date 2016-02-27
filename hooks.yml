@@ -1,22 +1,15 @@
-prepare-commit-msg:
-    - pattern: "*.go"
-      run:
-          - golint {file}
-          - gocyclo -over 10 {files}
-          - varcheck
-          - deadcode
-          - structcheck
-
-pre-push:
-    - run:
-          - go test .
-
 post-receive:
-    - pattern: "glide.yaml"
-      run:
-          - glide install
-
-    - pattern: "*.go"
-      run:
-          - echo {files}
-
+- pattern: glide.*
+  run:
+  - glide install
+prepare-commit-msg:
+- pattern: '*.go'
+  run:
+  - golint -min_confidence 0.3 {file}
+  - gocyclo -over 10 {file}
+  - varcheck
+  - deadcode
+  - structcheck
+pre-push:
+- run:
+  - go test .
