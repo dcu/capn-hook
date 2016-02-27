@@ -1,6 +1,7 @@
 prepare-commit-msg:
     - pattern: "*.go"
       run:
+          - golint {file}
           - gocyclo -over 10 {files}
           - varcheck
           - deadcode

@@ -15,7 +15,7 @@ const (
 
 var (
 	manifestFileName    = "hooks.yml"
-	errManifestNotFound = errors.New("Manifest not found")
+	errManifestNotFound = errors.New("manifest not found")
 )
 
 // Manifest represents the manifest to run the hooks
@@ -57,6 +57,39 @@ func FindManifest() (*Manifest, error) {
 	}
 
 	return findManifestIn(wd, 0)
+}
+
+// DefaultGolangManifest returns a default maniest for golang
+func DefaultGolangManifest() *Manifest {
+	return &Manifest{
+		PrepareCommitMsg: []*Hook{
+			&Hook{
+				Pattern: "*.go",
+				Run: []string{
+					"golint -min_confidence 0.3 {file}",
+					"gocyclo -over 10 {file}",
+					"varcheck",
+					"deadcode",
+					"structcheck",
+				},
+			},
+		},
+		PrePush: []*Hook{
+			&Hook{
+				Run: []string{
+					"go test .",
+				},
+			},
+		},
+		PostReceive: []*Hook{
+			&Hook{
+				Pattern: "glide.*",
+				Run: []string{
+					"glide install",
+				},
+			},
+		},
+	}
 }
 
 // Hooks returns all associated hooks given a hook name.

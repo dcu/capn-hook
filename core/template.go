@@ -18,13 +18,18 @@ func EscapeStringArray(arr []string) string {
 	return strings.Join(arr, " ")
 }
 
-// HasTemplateVariables returns true if the text has template variables.
-func HasTemplateVariables(text string) bool {
+// HasAnyTemplateVariables returns true if the text has template variables.
+func HasAnyTemplateVariables(text string) bool {
 	return strings.ContainsAny(text, "{}")
 }
 
-// Eval evaluates the template given the variables.
-func (template *Template) Eval(variables Vars) string {
+// HasTemplateVariable returns true if the text has the template variable with the given name.
+func HasTemplateVariable(text string, name string) bool {
+	return strings.Contains(text, fmt.Sprintf("{%s}", name))
+}
+
+// Apply evaluates the template given the variables.
+func (template *Template) Apply(variables Vars) {
 	output := template.Text
 	for name, value := range variables {
 		templateVar := fmt.Sprintf("{%s}", name)
@@ -32,5 +37,5 @@ func (template *Template) Eval(variables Vars) string {
 		output = strings.Replace(output, templateVar, value, -1)
 	}
 
-	return output
+	template.Text = output
 }

@@ -48,7 +48,7 @@ var (
 
 // Hook represents a hook to run
 type Hook struct {
-	Pattern string   `yaml:"pattern"`
+	Pattern string   `yaml:"pattern,omitempty"`
 	Run     []string `yaml:"run"`
 }
 
@@ -96,7 +96,7 @@ func (hook *Hook) Filter(files []string) []string {
 
 // RunCommand runs the given command
 func (hook *Hook) RunCommand(workingDir string, command string, input string) {
-	if HasTemplateVariables(command) {
+	if HasAnyTemplateVariables(command) {
 		return
 	}
 
@@ -134,12 +134,17 @@ func (hook *Hook) RunCommands(workingDir string, input string) {
 			return
 		}
 
-		if len(filteredFiles) > 0 {
+		commandsToRun := map[string]bool{}
+		filesInString := EscapeStringArray(filteredFiles)
+		for _, fileName := range filteredFiles {
 			tmpl := Template{Text: command}
-			command = tmpl.Eval(Vars{"files": EscapeStringArray(filteredFiles)})
+			tmpl.Apply(Vars{"files": filesInString, "file": fileName})
+			commandsToRun[tmpl.Text] = true
 		}
 
-		hook.RunCommand(workingDir, command, input)
+		for commandToRun := range commandsToRun {
+			hook.RunCommand(workingDir, commandToRun, input)
+		}
 	}
 }
 

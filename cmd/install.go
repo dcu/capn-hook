@@ -25,13 +25,11 @@ import (
 )
 
 var (
-	hookTemplate = core.Template{
-		Text: `#!/usr/bin/env bash
+	hookTemplate = `#!/usr/bin/env bash
 
 capn-hook run -s {hook}<<<"$(cat)"
 
-`,
-	}
+`
 )
 
 // installCmd represents the install command
@@ -54,10 +52,10 @@ If you have hooks that you are currently using please back them up before runnin
 
 			os.Remove(hookPath) // In case there's a symlink
 
-			fileContents := hookTemplate.Eval(core.Vars{"hook": hookName})
-			ioutil.WriteFile(hookPath, []byte(fileContents), 0755)
+			tmpl := core.Template{Text: hookTemplate}
+			tmpl.Apply(core.Vars{"hook": hookName})
+			ioutil.WriteFile(hookPath, []byte(tmpl.Text), 0755)
 		}
-
 	},
 }
 
