@@ -2,10 +2,22 @@ package core
 
 import (
 	"bytes"
+	"errors"
 	"io"
 	"io/ioutil"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
+)
+
+const (
+	maxDepthToFindGitDir = 2
+)
+
+var (
+	errGitDirNotFound = errors.New("GITDIR not found")
+	gitDirFiles       = []string{"HEAD", "config", "description", "index", "objects", "hooks"}
 )
 
 // GitCommand is a command to be executed by git
@@ -54,6 +66,44 @@ func (gitCommand *GitCommand) RunAndGetOutput() []byte {
 	}
 
 	return data
+}
+
+// FindGitDir finds the path to the GITDIR
+func FindGitDir() (string, error) {
+	wd, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+
+	return findGitDirIn(wd, 0)
+}
+
+func findGitDirIn(path string, depth int) (string, error) {
+	if depth > maxDepthToFindGitDir {
+		return "", errGitDirNotFound
+	}
+
+	candidate := filepath.Join(path, ".git")
+	isGitDir := true
+
+	for _, gitDirFile := range gitDirFiles {
+		file := filepath.Join(candidate, gitDirFile)
+		if _, err := os.Stat(file); os.IsNotExist(err) {
+			isGitDir = false
+			break
+		}
+	}
+
+	if isGitDir {
+		return candidate, nil
+	}
+
+	upDir, err := filepath.Abs(filepath.Join(path, ".."))
+	if err != nil {
+		return "", err
+	}
+
+	return findGitDirIn(upDir, depth+1)
 }
 
 // FindModifiedFiles returns the list of all modified files

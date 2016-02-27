@@ -9,10 +9,13 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var (
-	manifestFileName       = "hooks.yml"
+const (
 	maxDepthToFindManifest = 3
-	errManifestNotFound    = errors.New("Manifest not found")
+)
+
+var (
+	manifestFileName    = "hooks.yml"
+	errManifestNotFound = errors.New("Manifest not found")
 )
 
 // Manifest represents the manifest to run the hooks
@@ -53,12 +56,7 @@ func FindManifest() (*Manifest, error) {
 		return nil, err
 	}
 
-	manifest, err := findManifestIn(wd, 0)
-	if err != nil {
-		return nil, err
-	}
-
-	return manifest, nil
+	return findManifestIn(wd, 0)
 }
 
 // Hooks returns all associated hooks given a hook name.

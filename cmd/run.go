@@ -25,6 +25,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	silent *bool
+)
+
 // runCmd represents the run command
 var runCmd = &cobra.Command{
 	Use:   "run <hook>",
@@ -39,7 +43,9 @@ var runCmd = &cobra.Command{
 		}
 
 		if len(args) == 0 {
-			fmt.Printf("Missing hook name, options are: %v\n", core.SupportedHooks)
+			if !*silent {
+				fmt.Printf("Missing hook name, options are: %v\n", core.SupportedHooks)
+			}
 			return
 		}
 
@@ -52,7 +58,7 @@ var runCmd = &cobra.Command{
 			command.RunCommands(workingDir, input)
 		}
 
-		if len(commands) == 0 {
+		if len(commands) == 0 && !*silent {
 			println("Invalid hook name:", hookName)
 		}
 	},
@@ -86,5 +92,5 @@ func init() {
 	// is called directly, e.g.:
 	// runCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	//ShouldReadStdin = runCmd.Flags().BoolP("stdin", "I", false, "Reads the stdin")
+	silent = runCmd.Flags().BoolP("silent", "s", false, "Do not print errors")
 }
