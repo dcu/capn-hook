@@ -17,6 +17,7 @@ package cmd
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"code.cuadrado.xyz/capn-hook/core"
@@ -36,13 +37,10 @@ capn-hook run -s {hook}<<<"$(cat)"
 // installCmd represents the install command
 var installCmd = &cobra.Command{
 	Use:   "install",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Installs capn-hook in your git hooks",
+	Long: `The install command replaces all your hooks with a capn-hook version.
+If you have hooks that you are currently using please back them up before running this command.
+`,
 	Aliases: []string{"i"},
 	Run: func(cmd *cobra.Command, args []string) {
 		gitDir, err := core.FindGitDir()
@@ -53,6 +51,9 @@ to quickly create a Cobra application.`,
 
 		for _, hookName := range core.SupportedHooks {
 			hookPath := filepath.Join(gitDir, "hooks", hookName)
+
+			os.Remove(hookPath) // In case there's a symlink
+
 			fileContents := hookTemplate.Eval(core.Vars{"hook": hookName})
 			ioutil.WriteFile(hookPath, []byte(fileContents), 0755)
 		}
