@@ -48,8 +48,10 @@ var (
 
 // Hook represents a hook to run
 type Hook struct {
-	Pattern string   `yaml:"pattern,omitempty"`
-	Run     []string `yaml:"run"`
+	Pattern    string   `yaml:"pattern,omitempty"`
+	Run        []string `yaml:"run"`
+	Enforce    bool     `yaml:"enforce,omitempty"`
+	WorkingDir string   `yaml:"working_dir,omitempty"`
 }
 
 // Match returns true if the file is matched by this hook.

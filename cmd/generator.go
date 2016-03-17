@@ -30,10 +30,12 @@ var generatorCmd = &cobra.Command{
 	Aliases: []string{"g"},
 	Run: func(cmd *cobra.Command, args []string) {
 		var manifest *core.Manifest
-		if countFiles("go") > 0 {
+		if countFiles("**/*.go") > 0 {
 			manifest = core.DefaultGolangManifest()
-		} else if countFiles("rb") > 0 {
+		} else if countFiles("**/*.rb") > 0 {
 			manifest = core.DefaultRubyManifest()
+		} else if files := findFiles("build.gradle"); len(files) > 0 { // gradle project
+			manifest = core.DefaultAndroidManifest()
 		} else {
 			manifest = core.DefaultManifest()
 		}
@@ -43,13 +45,17 @@ var generatorCmd = &cobra.Command{
 	},
 }
 
-func countFiles(ext string) int {
-	files, err := filepath.Glob("**/*." + ext)
+func findFiles(pattern string) []string {
+	files, err := filepath.Glob(pattern)
 	if err != nil {
-		return 0
+		return []string{}
 	}
 
-	return len(files)
+	return files
+}
+
+func countFiles(pattern string) int {
+	return len(findFiles(pattern))
 }
 
 func init() {

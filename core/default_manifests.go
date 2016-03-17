@@ -28,6 +28,7 @@ func DefaultGolangManifest() *Manifest {
 					"deadcode",
 					"structcheck",
 				},
+				Enforce: true,
 			},
 		},
 		PrePush: []*Hook{
@@ -35,6 +36,7 @@ func DefaultGolangManifest() *Manifest {
 				Run: []string{
 					"go test .",
 				},
+				Enforce: true,
 			},
 		},
 		PostReceive: []*Hook{
@@ -57,12 +59,14 @@ func DefaultRubyManifest() *Manifest {
 				Run: []string{
 					"rubycritic -f console {files}",
 				},
+				Enforce: true,
 			},
 			&Hook{
 				Pattern: "Gemfile*",
 				Run: []string{
 					"dawn -z -K .",
 				},
+				Enforce: true,
 			},
 		},
 		PostReceive: []*Hook{
@@ -70,6 +74,26 @@ func DefaultRubyManifest() *Manifest {
 				Pattern: "Gemfile*",
 				Run: []string{
 					"bundle install",
+				},
+			},
+		},
+	}
+}
+
+// DefaultAndroidManifest returns the default manifest for android
+func DefaultAndroidManifest() *Manifest {
+	return &Manifest{
+		PrepareCommitMsg: []*Hook{
+			&Hook{
+				Pattern: "*.java",
+				Run: []string{
+					"lint .",
+				},
+			},
+			&Hook{
+				Pattern: "*.xml",
+				Run: []string{
+					"lint .",
 				},
 			},
 		},
