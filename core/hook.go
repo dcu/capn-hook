@@ -23,9 +23,6 @@ var (
 	// PostCommitName is the name of the post commit hook.
 	PostCommitName = "post-commit"
 
-	// PreRebaseName is the name of the pre rebase hook.
-	PreRebaseName = "pre-rebase"
-
 	// PostCheckoutName is the name of the post checkout hook.
 	PostCheckoutName = "post-checkout"
 
@@ -42,7 +39,7 @@ var (
 var (
 	// SupportedHooks is the list of supported hooks.
 	SupportedHooks = []string{
-		PreCommitName, PostReceiveName, PrepareCommitMsgName, PostCheckoutName, PostCommitName, PreRebaseName, PostMergeName, PrePushName, PreAutoGCName,
+		PreCommitName, PostReceiveName, PrepareCommitMsgName, PostCheckoutName, PostCommitName, PostMergeName, PrePushName, PreAutoGCName,
 	}
 )
 

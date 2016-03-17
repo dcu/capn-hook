@@ -25,7 +25,6 @@ type Manifest struct {
 	PostReceive      []*Hook `yaml:"post-receive,omitempty"`
 	PrepareCommitMsg []*Hook `yaml:"prepare-commit-msg,omitempty"`
 	PostCommit       []*Hook `yaml:"post-commit,omitempty"`
-	PreRebase        []*Hook `yaml:"pre-rebase,omitempty"`
 	PostCheckout     []*Hook `yaml:"post-checkout,omitempty"`
 	PostMerge        []*Hook `yaml:"post-merge,omitempty"`
 	PrePush          []*Hook `yaml:"pre-push,omitempty"`
@@ -78,10 +77,6 @@ func (manifest *Manifest) Hooks(name string) []*Hook {
 	case PostCommitName:
 		{
 			return manifest.PostCommit
-		}
-	case PreRebaseName:
-		{
-			return manifest.PreRebase
 		}
 	case PostCheckoutName:
 		{
