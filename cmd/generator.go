@@ -16,9 +16,9 @@ package cmd
 
 import (
 	"fmt"
-	"path/filepath"
 
 	"code.cuadrado.xyz/capn-hook/core"
+	"github.com/mattn/go-zglob"
 	"github.com/spf13/cobra"
 )
 
@@ -46,7 +46,7 @@ var generatorCmd = &cobra.Command{
 }
 
 func findFiles(pattern string) []string {
-	files, err := filepath.Glob(pattern)
+	files, err := zglob.Glob(pattern)
 	if err != nil {
 		return []string{}
 	}

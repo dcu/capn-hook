@@ -1,8 +1,10 @@
-hash: e62313b1a26bed70d993ab22c839a7a50b08ecd416f4c31076fff2d3586f0af3
-updated: 2016-03-17T09:06:46.803541139-05:00
+hash: 672c28ad1fd6c61445cc412781c985c84dc96c1414cbd9df0fd5ad891fede324
+updated: 2016-03-27T19:49:22.318326111-05:00
 imports:
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/mattn/go-zglob
+  version: 249e8bceca8cd265110a08bbb63303fb9db47445
 - name: github.com/spf13/cobra
   version: 65a708cee0a4424f4e353d031ce440643e312f92
 - name: github.com/spf13/pflag

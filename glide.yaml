@@ -2,3 +2,4 @@ package: code.cuadrado.xyz/capn-hook
 import:
 - package: github.com/spf13/cobra
 - package: gopkg.in/yaml.v2
+- package: github.com/mattn/go-zglob
