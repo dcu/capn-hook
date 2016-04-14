@@ -18,7 +18,7 @@ func DefaultManifest() *Manifest {
 // DefaultGolangManifest returns a default manifest for golang
 func DefaultGolangManifest() *Manifest {
 	return &Manifest{
-		PrepareCommitMsg: []*Hook{
+		PreCommit: []*Hook{
 			&Hook{
 				Pattern: "*.go",
 				Run: []string{
@@ -53,7 +53,7 @@ func DefaultGolangManifest() *Manifest {
 // DefaultRubyManifest returns a default manifest for ruby
 func DefaultRubyManifest() *Manifest {
 	return &Manifest{
-		PrepareCommitMsg: []*Hook{
+		PreCommit: []*Hook{
 			&Hook{
 				Pattern: "*.rb",
 				Run: []string{
@@ -83,7 +83,7 @@ func DefaultRubyManifest() *Manifest {
 // DefaultAndroidManifest returns the default manifest for android
 func DefaultAndroidManifest() *Manifest {
 	return &Manifest{
-		PrepareCommitMsg: []*Hook{
+		PreCommit: []*Hook{
 			&Hook{
 				Pattern: "*.java",
 				Run: []string{
