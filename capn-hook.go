@@ -20,7 +20,7 @@
 
 package main
 
-import "code.cuadrado.xyz/capn-hook/cmd"
+import "github.com/dcu/capn-hook/cmd"
 
 func main() {
 	cmd.Execute()

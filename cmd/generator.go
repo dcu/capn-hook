@@ -17,7 +17,7 @@ package cmd
 import (
 	"fmt"
 
-	"code.cuadrado.xyz/capn-hook/core"
+	"github.com/dcu/capn-hook/core"
 	"github.com/mattn/go-zglob"
 	"github.com/spf13/cobra"
 )

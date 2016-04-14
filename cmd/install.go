@@ -20,7 +20,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"code.cuadrado.xyz/capn-hook/core"
+	"github.com/dcu/capn-hook/core"
 	"github.com/spf13/cobra"
 )
 

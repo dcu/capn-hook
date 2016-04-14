@@ -1,4 +1,4 @@
-package: code.cuadrado.xyz/capn-hook
+package: github.com/dcu/capn-hook
 import:
 - package: github.com/spf13/cobra
 - package: gopkg.in/yaml.v2

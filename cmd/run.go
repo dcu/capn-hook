@@ -21,7 +21,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"code.cuadrado.xyz/capn-hook/core"
+	"github.com/dcu/capn-hook/core"
 	"github.com/spf13/cobra"
 )
 
