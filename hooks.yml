@@ -1,8 +1,4 @@
-post-receive:
-- pattern: glide.*
-  run:
-  - glide install
-prepare-commit-msg:
+pre-commit:
 - pattern: '*.go'
   run:
   - golint -min_confidence 0.3 {file}
@@ -10,6 +6,12 @@ prepare-commit-msg:
   - varcheck
   - deadcode
   - structcheck
+  enforce: true
+post-receive:
+- pattern: glide.*
+  run:
+  - glide install
 pre-push:
 - run:
   - go test .
+  enforce: true

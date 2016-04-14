@@ -24,7 +24,7 @@ import (
 
 // generatorCmd represents the generator command
 var generatorCmd = &cobra.Command{
-	Use:     "generator",
+	Use:     "generate",
 	Short:   "Generates a default config for your project.",
 	Long:    `Automatically detects if your project is golang or ruby and generates a default manifest for it.`,
 	Aliases: []string{"g"},
