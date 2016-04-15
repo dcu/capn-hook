@@ -55,7 +55,7 @@ var runCmd = &cobra.Command{
 
 		input := readStdin()
 		for _, command := range commands {
-			command.RunCommands(workingDir, input)
+			command.RunCommands(workingDir, input, args[1:])
 		}
 
 		if len(commands) == 0 && !*silent {

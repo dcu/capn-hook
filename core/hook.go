@@ -126,7 +126,7 @@ func (hook *Hook) RunCommand(workingDir string, command string, input string) {
 }
 
 // RunCommands runs the command associated with this hook.
-func (hook *Hook) RunCommands(workingDir string, input string) {
+func (hook *Hook) RunCommands(workingDir string, input string, args []string) {
 	for _, command := range hook.Run {
 		files := FindModifiedFiles()
 		filteredFiles := hook.Filter(files)
@@ -138,9 +138,10 @@ func (hook *Hook) RunCommands(workingDir string, input string) {
 
 		commandsToRun := map[string]bool{}
 		filesInString := EscapeStringArray(filteredFiles)
+		argsInString := EscapeStringArray(args)
 		for _, fileName := range filteredFiles {
 			tmpl := Template{Text: command}
-			tmpl.Apply(Vars{"files": filesInString, "file": fileName})
+			tmpl.Apply(Vars{"files": filesInString, "file": fileName, "args": argsInString})
 			commandsToRun[tmpl.Text] = true
 		}
 

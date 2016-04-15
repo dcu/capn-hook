@@ -27,7 +27,7 @@ import (
 var (
 	hookTemplate = `#!/usr/bin/env bash
 
-capn-hook run -s {hook}<<<"$(cat)"
+capn-hook run -s {hook} "$@"<<<"$(cat)"
 
 `
 )
