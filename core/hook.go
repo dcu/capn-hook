@@ -14,6 +14,9 @@ var (
 	// PreCommitName is the name of the pre commit hook.
 	PreCommitName = "pre-commit"
 
+	// CommitMsg is the name of the commit-msg hook.
+	CommitMsg = "commit-msg"
+
 	// PostReceiveName is the name of the post receive hook.
 	PostReceiveName = "post-receive"
 
@@ -39,7 +42,7 @@ var (
 var (
 	// SupportedHooks is the list of supported hooks.
 	SupportedHooks = []string{
-		PreCommitName, PostReceiveName, PrepareCommitMsgName, PostCheckoutName, PostCommitName, PostMergeName, PrePushName, PreAutoGCName,
+		PreCommitName, CommitMsg, PostReceiveName, PrepareCommitMsgName, PostCheckoutName, PostCommitName, PostMergeName, PrePushName, PreAutoGCName,
 	}
 )
 
