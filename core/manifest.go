@@ -22,6 +22,7 @@ var (
 // Manifest represents the manifest to run the hooks
 type Manifest struct {
 	PreCommit        []*Hook `yaml:"pre-commit,omitempty"`
+	CommitMsg        []*Hook `yaml:"commit-msg,omitempty"`
 	PostReceive      []*Hook `yaml:"post-receive,omitempty"`
 	PrepareCommitMsg []*Hook `yaml:"prepare-commit-msg,omitempty"`
 	PostCommit       []*Hook `yaml:"post-commit,omitempty"`
@@ -93,6 +94,10 @@ func (manifest *Manifest) Hooks(name string) []*Hook {
 	case PreAutoGCName:
 		{
 			return manifest.PreAutoGC
+		}
+	case CommitMsg:
+		{
+			return manifest.CommitMsg
 		}
 	}
 
