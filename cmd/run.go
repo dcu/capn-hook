@@ -51,14 +51,14 @@ var runCmd = &cobra.Command{
 
 		hookName := args[0]
 		workingDir := filepath.Dir(manifest.Path)
-		commands := manifest.Hooks(hookName)
+		hooks := manifest.Hooks(hookName)
 
 		input := readStdin()
-		for _, command := range commands {
-			command.RunCommands(workingDir, input, args[1:])
+		for _, hook := range hooks {
+			hook.RunCommands(workingDir, input, args[1:])
 		}
 
-		if len(commands) == 0 && !*silent {
+		if len(hooks) == 0 && !*silent {
 			println("Invalid hook name:", hookName)
 		}
 	},
