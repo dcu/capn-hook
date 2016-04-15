@@ -139,11 +139,13 @@ func (hook *Hook) RunCommands(workingDir string, input string, args []string) {
 		commandsToRun := map[string]bool{}
 		filesInString := EscapeStringArray(filteredFiles)
 		argsInString := EscapeStringArray(args)
+		tmpl := Template{Text: command}
 		for _, fileName := range filteredFiles {
-			tmpl := Template{Text: command}
-			tmpl.Apply(Vars{"files": filesInString, "file": fileName, "args": argsInString})
-			commandsToRun[tmpl.Text] = true
+			tmpl.Apply(Vars{"files": filesInString, "file": fileName})
 		}
+
+		tmpl.Apply(Vars{"args": argsInString})
+		commandsToRun[tmpl.Text] = true
 
 		for commandToRun := range commandsToRun {
 			hook.RunCommand(workingDir, commandToRun, input)
