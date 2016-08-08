@@ -10,6 +10,7 @@ func DefaultManifest() *Manifest {
 					"echo {files}",
 					"echo {file}",
 				},
+				Required: false,
 			},
 		},
 	}
@@ -22,13 +23,13 @@ func DefaultGolangManifest() *Manifest {
 			&Hook{
 				Pattern: "*.go",
 				Run: []string{
-					"golint -min_confidence 0.3 {file}",
+					"golint -min_confidence 0.3 -set_exit_status {files}",
 					"gocyclo -over 10 {file}",
 					"varcheck",
 					"deadcode",
 					"structcheck",
 				},
-				Enforce: true,
+				Required: true,
 			},
 		},
 		PrePush: []*Hook{
@@ -36,7 +37,7 @@ func DefaultGolangManifest() *Manifest {
 				Run: []string{
 					"go test .",
 				},
-				Enforce: true,
+				Required: true,
 			},
 		},
 		PostReceive: []*Hook{
@@ -45,6 +46,7 @@ func DefaultGolangManifest() *Manifest {
 				Run: []string{
 					"glide install",
 				},
+				Required: false,
 			},
 		},
 	}
@@ -59,14 +61,14 @@ func DefaultRubyManifest() *Manifest {
 				Run: []string{
 					"rubycritic -f console {files}",
 				},
-				Enforce: true,
+				Required: true,
 			},
 			&Hook{
 				Pattern: "Gemfile*",
 				Run: []string{
 					"dawn -z -K .",
 				},
-				Enforce: true,
+				Required: true,
 			},
 		},
 		PostReceive: []*Hook{
@@ -75,6 +77,7 @@ func DefaultRubyManifest() *Manifest {
 				Run: []string{
 					"bundle install",
 				},
+				Required: false,
 			},
 		},
 	}
@@ -89,12 +92,14 @@ func DefaultAndroidManifest() *Manifest {
 				Run: []string{
 					"lint .",
 				},
+				Required: false,
 			},
 			&Hook{
 				Pattern: "*.xml",
 				Run: []string{
 					"lint .",
 				},
+				Required: false,
 			},
 		},
 	}

@@ -50,7 +50,7 @@ var (
 type Hook struct {
 	Pattern    string   `yaml:"pattern,omitempty"`
 	Run        []string `yaml:"run"`
-	Enforce    bool     `yaml:"enforce,omitempty"`
+	Required   bool     `yaml:"required,omitempty"`
 	WorkingDir string   `yaml:"working_dir,omitempty"`
 }
 
@@ -121,7 +121,9 @@ func (hook *Hook) RunCommand(workingDir string, command string, input string) {
 	err = cmd.Run()
 	if err != nil {
 		fmt.Printf("Error while running command: %s\n", err)
-		os.Exit(1)
+		if hook.Required {
+			os.Exit(1)
+		}
 	}
 }
 
@@ -139,13 +141,14 @@ func (hook *Hook) RunCommands(workingDir string, input string, args []string) {
 		commandsToRun := map[string]bool{}
 		filesInString := EscapeStringArray(filteredFiles)
 		argsInString := EscapeStringArray(args)
-		tmpl := Template{Text: command}
 		for _, fileName := range filteredFiles {
-			tmpl.Apply(Vars{"files": filesInString, "file": fileName})
-		}
+			tmpl := Template{Text: command}
+			tmpl.Apply(Vars{"files": filesInString})
+			tmpl.Apply(Vars{"file": fileName})
+			tmpl.Apply(Vars{"args": argsInString})
 
-		tmpl.Apply(Vars{"args": argsInString})
-		commandsToRun[tmpl.Text] = true
+			commandsToRun[tmpl.Text] = true
+		}
 
 		for commandToRun := range commandsToRun {
 			hook.RunCommand(workingDir, commandToRun, input)

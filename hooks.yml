@@ -1,12 +1,12 @@
 pre-commit:
 - pattern: '*.go'
   run:
-  - golint -min_confidence 0.3 {file}
+  - golint -min_confidence 0.3 -set_exit_status {files}
   - gocyclo -over 10 {file}
   - varcheck
   - deadcode
   - structcheck
-  enforce: true
+  required: true
 post-receive:
 - pattern: glide.*
   run:
@@ -14,4 +14,4 @@ post-receive:
 pre-push:
 - run:
   - go test .
-  enforce: true
+  required: true
